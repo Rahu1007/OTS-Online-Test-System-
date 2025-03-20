@@ -1,0 +1,38 @@
+{% extends "main.html" %}
+
+{% block title %}
+    Test Results
+{% endblock %}
+
+{% block content %}
+<!-- <table>
+    <tr>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Attempt</th>
+        <th>Right</th>
+        <th>Wrong</th>
+        <th>Points</th>
+    </tr>
+
+    <tr>
+        <td>{{r.date}}</td>
+        <td>{{r.Time}}</td>
+        <td>{{r.attempt}}</td>
+        <td>{{r.right}}</td>
+        <td>{{r.wrong}}</td>
+        <td>{{r.points}}</td>
+    </tr>
+</table> -->
+    <h1>Test Results</h1>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% else %}
+        <p>Candidate Name: {{ candidate_name }}</p>
+        <p>Total Attempts: {{ attempt }}</p>
+        <p>Correct Answers: {{ right }}</p>
+        <p>Wrong Answers: {{ wrong }}</p>
+        <p>Total Points: {{ points }}</p>
+    {% endif %}
+    <a href="{% url 'OTS:home' %}">Back to Home</a>
+{% endblock %}
