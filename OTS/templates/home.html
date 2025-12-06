@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block title %}
+Online Testing System (OTS) - Candidate Home Page
+{% endblock %}
+
+{% block head %}
+<!-- <link rel="stylesheet" href="{% static 'home.css' %}"> -->
+<link rel="stylesheet" href="{% static 'home.css' %}">
+
+{% endblock %}
+
+{% block top %}
+<a href="{% url 'OTS:home' %}">Signup</a>
+<a href="{% url 'OTS:logout' %}">Logout</a>
+{% endblock %}
+
+{% block content %}
+<h1>Welcome {{ request.session.name }}, to your home page </h1>
+<div class="button-link">
+    <a href="{% url 'OTS:testPaper' %}?n=1">Test of 1 Question</a>
+</div>
+
+<div class="button-link">
+    <a href="{% url 'OTS:testPaper' %}?n=2">Test of 2 Questions</a>
+</div>
+
+<div class="button-link">
+    <a href="{% url 'OTS:testPaper' %}?n=3">Test of 3 Questions</a>
+</div>
+
+<div class="button-link">
+    <a href="{% url 'OTS:testPaper' %}?n=4">Test of 4 Questions</a>
+</div>
+
+<div class="button-link">
+    <a href="{% url 'OTS:testHistory' %}">Test History</a>
+</div>
+{% endblock %}

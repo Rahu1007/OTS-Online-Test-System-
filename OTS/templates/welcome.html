@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title%}
+Welcome to online testing System
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'welcome.css' %}">
+{% endblock %}
+{% block top %}
+<a href="{% url 'OTS:registrationForm' %}">Signup</a>
+<a href="{% url 'OTS:login' %}">Login</a>
+{% endblock %}
+
+{% block content%}
+<div class="welcome-container">
+    <h1 class="welcome-title">Welcome to Online Testing System</h1>
+    <p class="welcome-subtitle">
+        Test your knowledge with our comprehensive online testing platform.
+        Create an account to get started or login to continue your learning journey.
+    </p>
+    <div class="welcome-actions">
+        <a href="{% url 'OTS:registrationForm' %}">Get Started</a>
+        <a href="{% url 'OTS:login' %}">Sign In</a>
+    </div>
+</div>
+{% endblock %}

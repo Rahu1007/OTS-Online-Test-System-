@@ -1,0 +1,179 @@
+/* ========================================
+   REGISTRATION FORM STYLES
+   ======================================== */
+
+.all-forms {
+    max-width: 450px;
+    margin: 50px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.all-forms h2 {
+    text-align: center;
+    color: #1e3c72;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.all-forms form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-unit {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.all-forms label {
+    font-weight: 600;
+    color: #333;
+    font-size: 1rem;
+}
+
+.all-forms input[type="text"],
+.all-forms input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.all-forms input[type="text"]:focus,
+.all-forms input[type="password"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    background: white;
+}
+
+.all-forms input[type="submit"],
+.all-forms input[type="reset"] {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.all-forms input[type="submit"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.all-forms input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+}
+
+.all-forms input[type="reset"] {
+    background: #6c757d;
+    color: white;
+    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+}
+
+.all-forms input[type="reset"]:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(108, 117, 125, 0.5);
+}
+
+/* Error message */
+#error {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 20px;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+/* Links */
+.all-forms a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.all-forms a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+.all-forms p,
+.all-forms>text {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Button group */
+.form-unit:has(input[type="submit"]) {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.form-unit:has(input[type="submit"]) input {
+    flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .all-forms {
+        margin: 20px;
+        padding: 30px 20px;
+    }
+
+    .all-forms h2 {
+        font-size: 1.5rem;
+    }
+}

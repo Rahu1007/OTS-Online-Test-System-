@@ -1,0 +1,64 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block title %}
+Test History
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'test_history.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="history-container">
+    <h1>Test History</h1>
+
+    {% if results %}
+    <div class="summary-card">
+        <div class="summary-content">
+            <p class="greeting">Hi <strong>{{ candidate_name }}</strong>!</p>
+            <p class="stats">You have attempted <span class="highlight">{{ candidate.test_attempted }}</span> test(s)
+                and scored <span class="score-badge">{{ candidate.points }}/10</span></p>
+        </div>
+    </div>
+
+    <div class="history-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Attempt</th>
+                    <th>Total Questions</th>
+                    <th>Correct</th>
+                    <th>Wrong</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ result.date|date:"M d, Y" }}</td>
+                    <td>{{ result.attempt }}</td>
+                    <td>{{ result.attempt }}</td>
+                    <td class="correct">{{ result.right }}</td>
+                    <td class="wrong">{{ result.wrong }}</td>
+                    <td><span class="points-badge">{{ result.points }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-history">
+        <p>📝 No test history available yet.</p>
+        <a href="{% url 'OTS:home' %}">Take Your First Test</a>
+    </div>
+    {% endif %}
+
+    <div class="back-link">
+        <a href="{% url 'OTS:home' %}">← Back to Home</a>
+    </div>
+</div>
+{% endblock %}
