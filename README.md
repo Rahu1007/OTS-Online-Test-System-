@@ -461,6 +461,121 @@ pip install -r requirements.txt
 
 ---
 
+## 🚀 Deploying to Vercel
+
+This project includes configuration files for easy deployment to Vercel.
+
+### Prerequisites
+
+1. **GitHub Account** - Your code should be on GitHub
+2. **Vercel Account** - Sign up at https://vercel.com (free)
+
+### Deployment Steps
+
+#### Step 1: Push to GitHub
+
+Make sure all your code is pushed to GitHub:
+
+```bash
+git add .
+git commit -m "Ready for deployment"
+git push origin main
+```
+
+#### Step 2: Import Project to Vercel
+
+1. Go to https://vercel.com/dashboard
+2. Click "Add New" → "Project"
+3. Import your GitHub repository
+4. Vercel will automatically detect the configuration
+
+#### Step 3: Configure Environment Variables (Optional)
+
+For production, add these environment variables in Vercel:
+
+- `SECRET_KEY` - Your Django secret key
+- `DEBUG` - Set to `False`
+- `DATABASE_URL` - If using external database
+
+#### Step 4: Deploy
+
+Click "Deploy" and Vercel will:
+- Install dependencies from `requirements.txt`
+- Run migrations
+- Collect static files
+- Deploy your application
+
+### Configuration Files Included
+
+- **vercel.json** - Vercel deployment configuration
+- **requirements.txt** - Python dependencies
+- **index.py** - Vercel entry point
+- **build.sh** - Build script for migrations
+
+### Important Notes for Vercel Deployment
+
+⚠️ **Database Limitation**
+
+SQLite doesn't work well on Vercel (serverless environment). For production:
+
+1. **Use PostgreSQL** (recommended):
+   - Sign up for free PostgreSQL at https://neon.tech or https://supabase.com
+   - Add database URL to Vercel environment variables
+   - Update `settings.py`:
+
+```python
+import os
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600
+    )
+}
+```
+
+2. **Install dj-database-url**:
+```bash
+pip install dj-database-url psycopg2-binary
+```
+
+⚠️ **Security Settings**
+
+Update `settings.py` for production:
+
+```python
+import os
+
+# Use environment variables
+SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+# Update ALLOWED_HOSTS with your Vercel domain
+ALLOWED_HOSTS = [
+    'your-app.vercel.app',
+    'localhost',
+    '127.0.0.1'
+]
+```
+
+### Accessing Your Deployed App
+
+After deployment, your app will be available at:
+- `https://your-app-name.vercel.app/OTS/`
+
+### Redeploying After Changes
+
+```bash
+git add .
+git commit -m "Your changes"
+git push origin main
+```
+
+Vercel will automatically redeploy!
+
+---
+
 ## 🤝 Contributing
 
 If you want to improve this project:
