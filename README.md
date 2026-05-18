@@ -4,6 +4,38 @@ A simple and user-friendly **Online Testing System** built with Django. This web
 
 ---
 
+## ⚡ Quick Start (How to Run)
+
+Follow these simple steps to run the project immediately:
+
+1. **Open Command Prompt/Terminal** and navigate to the project directory:
+   ```bash
+   cd "C:\Users\RAHUL SHARMA\Downloads\myproject"
+   ```
+
+2. **Activate the Virtual Environment**:
+   - For Windows:
+     ```bash
+     .\.venv\Scripts\activate
+     ```
+   - For Mac/Linux:
+     ```bash
+     source .venv/bin/activate
+     ```
+
+3. **Start the Development Server**:
+   ```bash
+   python manage.py runserver
+   ```
+
+4. **Open in your Web Browser**:
+   - Main Application: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+   - Admin Panel: [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
+
+*(For full setup from scratch, see the [Installation Guide](#-installation-guide) below.)*
+
+---
+
 ## 🌟 Features
 
 - **User Registration**: New students can create an account
