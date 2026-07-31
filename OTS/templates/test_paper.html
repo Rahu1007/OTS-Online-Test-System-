@@ -9,21 +9,63 @@ OTS - Test Paper
 <link rel="stylesheet" href="{% static 'test_paper.css' %}">
 {% endblock %}
 
-
-
 {% block content%}
-<form action="{% url 'OTS:calculateTest' %}" method="post">
+<div class="test-header">
+    <h2>📝 Exam Paper</h2>
+    <p>Read each question carefully. For coding questions, write your Python code in the text box.</p>
+</div>
+
+<form action="{% url 'OTS:calculateTest' %}" method="post" id="exam-form">
     {% csrf_token %}
     {% for question in questions %}
-    <div class="question">
-        <input type="hidden" name="qno{{question.qid}}" value="{{question.qid}}">
-        {{question.que}}
+    <div class="question-block">
+        <div class="question">
+            <input type="hidden" name="qno{{question.qid}}" value="{{question.qid}}">
+            <span class="q-badge">Q{{ forloop.counter }}</span>
+            <span class="q-text">{{question.que|linebreaksbr}}</span>
+        </div>
+
+        {% if question.is_coding %}
+        <div class="coding-wrapper">
+            <div class="coding-header">
+                <span class="coding-icon">💻</span>
+                <span>Write your Python code below:</span>
+            </div>
+            <textarea name="q{{question.qid}}" rows="8" class="coding-area" placeholder="# Write your python code here...
+# Example:
+# num = 5
+# print(num)"></textarea>
+        </div>
+        {% else %}
+        <div class="options-group">
+            <label class="option-label" for="q{{question.qid}}_a">
+                <input type="radio" id="q{{question.qid}}_a" name="q{{question.qid}}" value="a">
+                <span class="option-letter">A</span>
+                <span class="option-text">{{question.a}}</span>
+            </label>
+            <label class="option-label" for="q{{question.qid}}_b">
+                <input type="radio" id="q{{question.qid}}_b" name="q{{question.qid}}" value="b">
+                <span class="option-letter">B</span>
+                <span class="option-text">{{question.b}}</span>
+            </label>
+            <label class="option-label" for="q{{question.qid}}_c">
+                <input type="radio" id="q{{question.qid}}_c" name="q{{question.qid}}" value="c">
+                <span class="option-letter">C</span>
+                <span class="option-text">{{question.c}}</span>
+            </label>
+            <label class="option-label" for="q{{question.qid}}_d">
+                <input type="radio" id="q{{question.qid}}_d" name="q{{question.qid}}" value="d">
+                <span class="option-letter">D</span>
+                <span class="option-text">{{question.d}}</span>
+            </label>
+        </div>
+        {% endif %}
     </div>
-    <div class="options"><input type="radio" name="q{{question.qid}}" value="a"> {{question.a}} </div>
-    <div class="options"><input type="radio" name="q{{question.qid}}" value="b"> {{question.b}} </div>
-    <div class="options"><input type="radio" name="q{{question.qid}}" value="c"> {{question.c}} </div>
-    <div class="options"><input type="radio" name="q{{question.qid}}" value="d"> {{question.d}} </div>
     {% endfor %}
-    <div> <input type="submit" value="Submit"> </div>
+
+    <div class="submit-container">
+        <p class="submit-note">⚠️ Once submitted, answers cannot be changed.</p>
+        <button type="submit" class="btn-submit">Submit Exam</button>
+    </div>
 </form>
-{% endblock %}
+{% endblock %}

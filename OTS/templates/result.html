@@ -1,38 +1,112 @@
 {% extends "main.html" %}
+{% load static %}
 
 {% block title %}
-    Test Results
+    Test Results - OTS
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'result.css' %}">
 {% endblock %}
 
 {% block content %}
-<!-- <table>
-    <tr>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Attempt</th>
-        <th>Right</th>
-        <th>Wrong</th>
-        <th>Points</th>
-    </tr>
-
-    <tr>
-        <td>{{r.date}}</td>
-        <td>{{r.Time}}</td>
-        <td>{{r.attempt}}</td>
-        <td>{{r.right}}</td>
-        <td>{{r.wrong}}</td>
-        <td>{{r.points}}</td>
-    </tr>
-</table> -->
-    <h1>Test Results</h1>
+<div class="result-container">
+    <h1 class="result-title">Test Results</h1>
+    
     {% if error %}
-        <p>{{ error }}</p>
+        <div class="error-message">
+            <p>{{ error }}</p>
+        </div>
     {% else %}
-        <p>Candidate Name: {{ candidate_name }}</p>
-        <p>Total Attempts: {{ attempt }}</p>
-        <p>Correct Answers: {{ right }}</p>
-        <p>Wrong Answers: {{ wrong }}</p>
-        <p>Total Points: {{ points }}</p>
+        <div class="candidate-info">
+            <p><strong>Candidate Name:</strong> {{ candidate_name }}</p>
+        </div>
+        
+        <div class="result-score">
+            {{ points|floatformat:1 }}
+        </div>
+        <p class="score-label">Total Points / 10</p>
+        
+        <div class="score-summary-grid">
+            <div class="summary-card total-attempts">
+                <span class="summary-num">{{ attempt }}</span>
+                <span class="summary-label">Total Questions</span>
+            </div>
+            <div class="summary-card correct-answers">
+                <span class="summary-num">{{ right }}</span>
+                <span class="summary-label">Correct MCQs</span>
+            </div>
+            <div class="summary-card wrong-answers">
+                <span class="summary-num">{{ wrong }}</span>
+                <span class="summary-label">Incorrect MCQs</span>
+            </div>
+        </div>
+        
+        {% if last_test_details %}
+            <div class="details-section">
+                <h2>Detailed Question Review</h2>
+                {% for detail in last_test_details %}
+                    <div class="detail-card {% if detail.is_coding %}coding-detail{% elif detail.is_correct %}correct-card{% else %}incorrect-card{% endif %}">
+                        <div class="detail-question">
+                            <span class="q-num">Q{{ forloop.counter }}.</span>
+                            <span class="q-text">{{ detail.que|linebreaksbr }}</span>
+                        </div>
+                        
+                        {% if detail.is_coding %}
+                            <div class="detail-coding-answers">
+                                <div class="code-block-wrapper user-code">
+                                    <div class="code-title">Your Submitted Code:</div>
+                                    <pre class="code-box"><code>{% if detail.user_answer %}{{ detail.user_answer }}{% else %}[No Code Submitted]{% endif %}</code></pre>
+                                </div>
+                                <div class="code-block-wrapper sample-code">
+                                    <div class="code-title">Sample Correct Solution:</div>
+                                    <pre class="code-box"><code>{{ detail.sample_solution }}</code></pre>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="detail-mcq-options">
+                                <div class="result-option {% if detail.user_answer == 'a' %}{% if detail.is_correct %}correct-choice{% else %}incorrect-choice{% endif %}{% elif detail.ans == 'a' %}correct-choice-highlight{% endif %}">
+                                    <strong>A:</strong> {{ detail.a }}
+                                    {% if detail.user_answer == 'a' %}
+                                        {% if detail.is_correct %} <span class="choice-tag tag-correct">✓ Your Correct Choice</span> {% else %} <span class="choice-tag tag-incorrect">✗ Your Choice</span> {% endif %}
+                                    {% elif detail.ans == 'a' %}
+                                        <span class="choice-tag tag-answer">✓ Correct Answer</span>
+                                    {% endif %}
+                                </div>
+                                <div class="result-option {% if detail.user_answer == 'b' %}{% if detail.is_correct %}correct-choice{% else %}incorrect-choice{% endif %}{% elif detail.ans == 'b' %}correct-choice-highlight{% endif %}">
+                                    <strong>B:</strong> {{ detail.b }}
+                                    {% if detail.user_answer == 'b' %}
+                                        {% if detail.is_correct %} <span class="choice-tag tag-correct">✓ Your Correct Choice</span> {% else %} <span class="choice-tag tag-incorrect">✗ Your Choice</span> {% endif %}
+                                    {% elif detail.ans == 'b' %}
+                                        <span class="choice-tag tag-answer">✓ Correct Answer</span>
+                                    {% endif %}
+                                </div>
+                                <div class="result-option {% if detail.user_answer == 'c' %}{% if detail.is_correct %}correct-choice{% else %}incorrect-choice{% endif %}{% elif detail.ans == 'c' %}correct-choice-highlight{% endif %}">
+                                    <strong>C:</strong> {{ detail.c }}
+                                    {% if detail.user_answer == 'c' %}
+                                        {% if detail.is_correct %} <span class="choice-tag tag-correct">✓ Your Correct Choice</span> {% else %} <span class="choice-tag tag-incorrect">✗ Your Choice</span> {% endif %}
+                                    {% elif detail.ans == 'c' %}
+                                        <span class="choice-tag tag-answer">✓ Correct Answer</span>
+                                    {% endif %}
+                                </div>
+                                <div class="result-option {% if detail.user_answer == 'd' %}{% if detail.is_correct %}correct-choice{% else %}incorrect-choice{% endif %}{% elif detail.ans == 'd' %}correct-choice-highlight{% endif %}">
+                                    <strong>D:</strong> {{ detail.d }}
+                                    {% if detail.user_answer == 'd' %}
+                                        {% if detail.is_correct %} <span class="choice-tag tag-correct">✓ Your Correct Choice</span> {% else %} <span class="choice-tag tag-incorrect">✗ Your Choice</span> {% endif %}
+                                    {% elif detail.ans == 'd' %}
+                                        <span class="choice-tag tag-answer">✓ Correct Answer</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     {% endif %}
-    <a href="{% url 'OTS:home' %}">Back to Home</a>
+    
+    <div class="result-actions">
+        <a href="{% url 'OTS:home' %}" class="btn-back">Back to Home</a>
+    </div>
+</div>
 {% endblock %}

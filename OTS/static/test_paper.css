@@ -2,141 +2,289 @@
    TEST PAPER STYLES
    ======================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
 .content form {
-    max-width: 900px;
+    max-width: 860px;
     margin: 0 auto;
-}
-
-/* Question styling */
-.question {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px 25px;
-    margin: 30px 0 15px 0;
-    border-radius: 12px;
-    font-size: 1.2rem;
-    font-weight: 600;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-    animation: slideInLeft 0.5s ease-out;
-}
-
-@keyframes slideInLeft {
-    from {
-        transform: translateX(-50px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* Options styling */
-.options {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 15px 20px;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: 2px solid #e0e0e0;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 1.05rem;
-}
-
-.options:hover {
-    background: rgba(102, 126, 234, 0.1);
-    border-color: #667eea;
-    transform: translateX(10px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-}
-
-.options input[type="radio"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: #667eea;
-}
-
-.options:has(input[type="radio"]:checked) {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-    border-color: #667eea;
-    border-width: 3px;
-    font-weight: 600;
-}
-
-/* Submit button container */
-.content form>div:last-child {
-    text-align: center;
-    margin-top: 40px;
-    padding-top: 30px;
-    border-top: 2px solid #e0e0e0;
-}
-
-/* Submit button */
-input[type="submit"] {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 15px 60px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    border-radius: 30px;
-    cursor: pointer;
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-input[type="submit"]:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-}
-
-input[type="submit"]:active {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    padding-bottom: 100px;
 }
 
 /* Test header */
 .test-header {
     text-align: center;
     margin-bottom: 40px;
-    padding: 30px;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    border-radius: 15px;
+    padding: 32px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    color: white;
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.35);
+    max-width: 860px;
+    margin: 0 auto 40px auto;
 }
 
 .test-header h2 {
-    color: #1e3c72;
-    font-size: 2rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.9rem;
+    font-weight: 700;
     margin-bottom: 10px;
+    margin-top: 0;
 }
 
 .test-header p {
-    color: #666;
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* Each question block */
+.question-block {
+    background: white;
+    border-radius: 16px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    border: 1px solid #e8eaf0;
+    transition: box-shadow 0.3s;
+    animation: fadeSlideIn 0.4s ease-out;
+}
+
+.question-block:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+}
+
+@keyframes fadeSlideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Question text bar */
+.question {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 25px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    line-height: 1.6;
+}
+
+.q-badge {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    padding: 3px 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.q-text {
+    flex: 1;
+}
+
+/* ----------------------------------------
+   OPTIONS  — label makes whole row click
+   ---------------------------------------- */
+.options-group {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Hide the native radio visually — keep it accessible */
+.option-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+/* The clickable row */
+.option-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 2px solid #e8eaf0;
+    background: #f8f9ff;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: #2d3748;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    user-select: none;
+}
+
+.option-label:hover {
+    background: #eef0ff;
+    border-color: #667eea;
+    transform: translateX(6px);
+}
+
+/* Letter badge (A / B / C / D) */
+.option-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #667eea;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: background 0.2s;
+}
+
+.option-label:hover .option-letter {
+    background: #764ba2;
+}
+
+.option-text {
+    flex: 1;
+}
+
+/* Selected state — triggered by :has() when the hidden radio is checked */
+.option-label:has(input[type="radio"]:checked) {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    border-color: #667eea;
+    border-width: 2.5px;
+    font-weight: 600;
+    transform: translateX(6px);
+}
+
+.option-label:has(input[type="radio"]:checked) .option-letter {
+    background: #764ba2;
+    box-shadow: 0 2px 8px rgba(118, 75, 162, 0.4);
+}
+
+/* ----------------------------------------
+   CODING QUESTION
+   ---------------------------------------- */
+.coding-wrapper {
+    padding: 20px;
+}
+
+.coding-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 10px;
+}
+
+.coding-icon {
     font-size: 1.1rem;
 }
 
-/* Responsive design */
+.coding-area {
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.95rem;
+    padding: 16px;
+    border: 2px solid #1e293b;
+    border-radius: 10px;
+    background-color: #0f172a;
+    color: #7dd3fc;
+    resize: vertical;
+    outline: none;
+    line-height: 1.6;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    min-height: 160px;
+}
+
+.coding-area::placeholder {
+    color: #475569;
+}
+
+.coding-area:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* ----------------------------------------
+   SUBMIT SECTION
+   ---------------------------------------- */
+.submit-container {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 2px solid #e8eaf0;
+}
+
+.submit-note {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: #e53e3e;
+    margin-bottom: 18px;
+    font-weight: 500;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 16px 70px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 6px 22px rgba(102, 126, 234, 0.45);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(102, 126, 234, 0.6);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.btn-submit:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* ----------------------------------------
+   RESPONSIVE
+   ---------------------------------------- */
 @media (max-width: 768px) {
     .question {
         font-size: 1rem;
-        padding: 15px 20px;
+        padding: 16px 18px;
     }
 
-    .options {
+    .option-label {
         font-size: 0.95rem;
-        padding: 12px 15px;
+        padding: 12px 14px;
     }
 
-    input[type="submit"] {
-        padding: 12px 40px;
+    .btn-submit {
+        padding: 14px 40px;
         font-size: 1rem;
     }
 }

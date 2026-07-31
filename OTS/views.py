@@ -96,7 +96,10 @@ def candidateHome(request):
     if 'name' not in request.session.keys():
         res=redirect('OTS:login')
     else:
-        res=render(request,'home.html')
+        q_count = Question.objects.count()
+        # Create a range up to a maximum of 10 or q_count, ensuring there's at least 1 option
+        q_range = range(1, min(q_count, 10) + 1) if q_count > 0 else range(1, 5)
+        res=render(request,'home.html', {'q_range': q_range})
     return res
     
 
@@ -106,13 +109,17 @@ def testPaper(request):
     if 'name' not in request.session.keys():
         return redirect('OTS:login')  # Redirect to login if not logged in
 
-    # Get the number of questions to display
-    n = int(request.GET.get('n', 1))  # Default to 1 question if 'n' is not provided
-
-    # Fetch and shuffle questions
-    question_pool = list(Question.objects.all())  # Corrected 'objects'
-    random.shuffle(question_pool)
-    question_list = question_pool[:n]  # Select the required number of questions
+    category = request.GET.get('category', None)
+    if category == 'class_7':
+        # Fetch Class 7th Test questions specifically in order
+        question_list = list(Question.objects.filter(category='class_7').order_by('qid'))
+    else:
+        # Get the number of questions to display
+        n = int(request.GET.get('n', 1))  # Default to 1 question if 'n' is not provided
+        # Fetch and shuffle general questions
+        question_pool = list(Question.objects.filter(category='general'))
+        random.shuffle(question_pool)
+        question_list = question_pool[:n]  # Select the required number of questions
 
     # Prepare the context and render the template
     context = {'questions': question_list}
@@ -174,23 +181,57 @@ def calculateTestResult(request):
             except ValueError:
                 pass  # Handle any non-integer values gracefully
 
+    last_test_details = []
+    total_mcqs = 0
+
     # Calculate results for each question
     for qid in qid_list:
         try:
             question = Question.objects.get(qid=qid)  # Get the question object
-            user_answer = request.POST.get(f'q{qid}', None)  # Fetch user's answer
-            if user_answer == question.ans:
-                total_right += 1
+            user_answer = request.POST.get(f'q{qid}', '').strip()  # Fetch user's answer
+            
+            detail = {
+                'qid': question.qid,
+                'que': question.que,
+                'is_coding': question.is_coding,
+                'user_answer': user_answer,
+            }
+
+            if question.is_coding:
+                # For coding questions, provide the sample solution
+                detail['sample_solution'] = question.sample_solution
+                total_attempt += 1
             else:
-                total_wrong += 1
-            total_attempt += 1
+                total_mcqs += 1
+                detail['a'] = question.a
+                detail['b'] = question.b
+                detail['c'] = question.c
+                detail['d'] = question.d
+                detail['ans'] = question.ans
+                
+                is_correct = (user_answer.lower() == question.ans.lower())
+                detail['is_correct'] = is_correct
+                
+                if is_correct:
+                    total_right += 1
+                else:
+                    total_wrong += 1
+                total_attempt += 1
+
+            last_test_details.append(detail)
         except Question.DoesNotExist:
             pass  # Ignore missing questions
 
+    # Cache last test details in session
+    request.session['last_test_details'] = last_test_details
+
     # Avoid division by zero in points calculation
-    points = 0
-    if qid_list:
-        points = ((total_right - total_wrong) / len(qid_list)) * 10
+    points = 0.0
+    if total_mcqs > 0:
+        points = ((total_right - total_wrong) / total_mcqs) * 10
+    else:
+        # If test contains only coding questions
+        points = 10.0
 
     # Store the result in the Result table
     try:
@@ -252,10 +293,9 @@ def testResultHistory(request):
 
 
 def showTestResult(request):
-    def showTestResult(request):
     # Check if the user is logged in
-        if 'username' not in request.session:
-            return redirect('OTS:login')  # Redirect to the login page
+    if 'username' not in request.session:
+        return redirect('OTS:login')  # Redirect to the login page
 
     try:
         # Retrieve the candidate's result from the database
@@ -267,6 +307,9 @@ def showTestResult(request):
             context = {'error': "No test results found."}
             return render(request, 'result.html', context)
 
+        # Retrieve last test details from session
+        last_test_details = request.session.get('last_test_details', None)
+
         # Prepare context for the result page
         context = {
             'attempt': result.attempt,
@@ -274,6 +317,7 @@ def showTestResult(request):
             'wrong': result.wrong,
             'points': result.points,
             'candidate_name': candidate.name,
+            'last_test_details': last_test_details,
         }
         return render(request, 'result.html', context)
 

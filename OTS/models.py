@@ -19,11 +19,14 @@ class Candidate(models.Model):
 class Question(models.Model):  # Fixed typo here
     qid = models.BigAutoField(primary_key=True, auto_created=True)
     que = models.TextField()
-    a = models.CharField(max_length=225)
-    b = models.CharField(max_length=225)
-    c = models.CharField(max_length=225)
-    d = models.CharField(max_length=225)
-    ans = models.CharField(max_length=2)
+    a = models.CharField(max_length=225, blank=True, null=True)
+    b = models.CharField(max_length=225, blank=True, null=True)
+    c = models.CharField(max_length=225, blank=True, null=True)
+    d = models.CharField(max_length=225, blank=True, null=True)
+    ans = models.CharField(max_length=2, blank=True, null=True)
+    category = models.CharField(max_length=50, default='general')
+    is_coding = models.BooleanField(default=False)
+    sample_solution = models.TextField(blank=True, null=True)
 
 class Result(models.Model):
     resultid = models.BigAutoField(primary_key=True, auto_created=True)

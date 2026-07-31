@@ -19,20 +19,35 @@ Online Testing System (OTS) - Candidate Home Page
 
 {% block content %}
 <h1>Welcome {{ request.session.name }}, to your home page </h1>
-<div class="button-link">
-    <a href="{% url 'OTS:testPaper' %}?n=1">Test of 1 Question</a>
-</div>
+<form action="{% url 'OTS:testPaper' %}" method="get" class="start-test-form">
+    <div class="form-select-container">
+        <label for="n">Select Number of Questions:</label>
+        <select name="n" id="n" class="num-select">
+            {% for i in q_range %}
+                <option value="{{ i }}" {% if i == 4 or forloop.last and i < 4 %}selected{% endif %}>{{ i }} Question{% if i > 1 %}s{% endif %}</option>
+            {% empty %}
+                <option value="1">1 Question</option>
+                <option value="2">2 Questions</option>
+                <option value="3">3 Questions</option>
+                <option value="4" selected>4 Questions</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="button-link start-button-container">
+        <button type="submit" class="btn-start-test">Start Test</button>
+    </div>
+</form>
 
-<div class="button-link">
-    <a href="{% url 'OTS:testPaper' %}?n=2">Test of 2 Questions</a>
-</div>
-
-<div class="button-link">
-    <a href="{% url 'OTS:testPaper' %}?n=3">Test of 3 Questions</a>
-</div>
-
-<div class="button-link">
-    <a href="{% url 'OTS:testPaper' %}?n=4">Test of 4 Questions</a>
+<!-- Special Class 7th Test Section -->
+<div class="special-test-container">
+    <h2>Special Test Section</h2>
+    <div class="special-test-card">
+        <h3>Class 7th Test</h3>
+        <p>Attempt the special 10-question evaluation test designed for Class 7th.</p>
+        <div class="button-link">
+            <a href="{% url 'OTS:testPaper' %}?category=class_7" class="btn-start-special">Start Class 7th Test</a>
+        </div>
+    </div>
 </div>
 
 <div class="button-link">
